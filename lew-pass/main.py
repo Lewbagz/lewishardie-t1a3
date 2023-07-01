@@ -10,37 +10,44 @@ import random
 
 
 def generate_password():
-
+    # setting variables for the strings that are being imported
     letters = string.ascii_letters
     digits = string.digits
     special_characters = string.punctuation
 
     characters = letters + digits + special_characters
-    
+
     # password length
     # Ask the user for the websites specific length requirements guidelines
-
+    # Most websites asking for a minimum of 8, so I'll set it at 10 to ensure a more secure password from the get go
     min_password_length = 10
+    # Ask user for the maximum password length allowed
     max_password_length = int(input("What is the maximum length of the password? "))
+    # password length is randomly selected through secrets module in the range from min_password_length to max_password_length
+    password_length = secrets.choice(range(min_password_length, max_password_length + 1))
+    password = ""
     
     while True:
-        password_length = secrets.choice(range(min_password_length, max_password_length + 1)) #randbelow(50) + 10 # Generates a random password length between 10-60
-        password = ""
+        # password is set to empy
+        # for loop to add characters to the password up to the password length
         for i in range(password_length):
             password += "".join(secrets.choice(characters))
-        
-        if (any(c.islower() for c in password)
-                and any(c.isupper() for c in password) 
-                and sum(c.isdigit() for c in password)
+        # check to make sure there is atleast one character of each type in the password
+        if (any(c.islower for c in password)
+                and any(c.isupper for c in password) 
+                and sum(c in digits for c in password)
                 and any(c in special_characters for c in password)):
             break
     
-    print(f"Your password is: {password}")
+    return password
         
 
-generate_password()
+password = generate_password()
+print(password)
 
     #generate password
+
+
 
     # while True:
     #     password = ""
