@@ -2,12 +2,12 @@
 import secrets
 # import string to allow use of ascii_lowercase, ascii_uppercase, digits, punctuation
 import string
-# import random to use randint to randomise password length
-import random
 
 # def user_name():
 
-
+# class GeneratePassword:
+#     def __init__(self, password):
+#         self.password = password
 
 def generate_password():
     # setting variables for the strings that are being imported
@@ -20,7 +20,7 @@ def generate_password():
     # password length
     # Ask the user for the websites specific length requirements guidelines
     # Most websites asking for a minimum of 8, so I'll set it at 10 to ensure a more secure password from the get go
-    min_password_length = 10
+    min_password_length = int(input("What is the minimum length of the password? "))
     # Ask user for the maximum password length allowed
     max_password_length = int(input("What is the maximum length of the password? "))
     # password length is randomly selected through secrets module in the range from min_password_length to max_password_length
@@ -34,16 +34,13 @@ def generate_password():
             password += "".join(secrets.choice(characters))
         # check to make sure there is atleast one character of each type in the password
         if (any(c.islower for c in password)
-                and any(c.isupper for c in password) 
+                and any(c.isupper for c in password)
                 and sum(c in digits for c in password)
                 and any(c in special_characters for c in password)):
             break
     
     return password
-        
 
-password = generate_password()
-print(password)
 
     #generate password
 
