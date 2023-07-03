@@ -32,38 +32,31 @@ from clear import clear_terminal
     # [4] Mark task as completed
     # [Enter anything else to exit..]
     # """) 
-
-#
-
-# match command:
-#     case 1:
-#     case 2:  
-#     case 3:
-
-# Add a master password
+    
 
 accounts = {
 
 }
-
 
 # functions
 def print_options():
     clear_terminal()
 
     print("""
-    Todo List options
+    Account options
 
     Enter options from the list below
 
-    [1] List accounts
-    [2] Add accounts
+    [1] List Accounts
+    [2] Add Accounts
+    [3] Get Password
     [Enter anything else to exit..]
     """) 
 
 def list_accounts():
     clear_terminal()
-       # for k,v in tasks.items(): # k,v stands for key and value. a way to extract those from the list
+
+    # for k,v in tasks.items(): # k,v stands for key and value. a way to extract those from the list
     #     print(k,v)
 
     print("---------Your Accounts---------")
@@ -108,19 +101,9 @@ def add_accounts():
 """)
 
 
-# def add_task():
-#     clear_terminal()
-#     print("---------Add new Task---------")
-#     task = input("Enter your task name> ")
-#     tasks[task] = False
-#     clear_terminal()
-#     print("New task added")
-#     print(get_task(task))
-
-
-
 # master_password = ""
 # master_password = (input("What is the master password? "))
+
 
 
 # def check_password():
@@ -143,10 +126,6 @@ while True:
             list_accounts()
         case 2:
             add_accounts()
-        # case 3:
-        #     remove_task()
-        # case 4:
-        #     mark_task()
         case _:
             break
 

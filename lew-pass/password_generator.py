@@ -20,15 +20,29 @@ def generate_password():
     # password length
     # Ask the user for the websites specific length requirements guidelines
     # Most websites asking for a minimum of 8, so I'll set it at 10 to ensure a more secure password from the get go
-    min_password_length = int(input("What is the minimum length of the password? "))
+    
+    try:
+        min_password_length = int(input("What is the minimum length of the password? "))
+    except ValueError:
+        print("You cannot enter a non digit")
+    else:
+        print(min_password_length)
+
     # Ask user for the maximum password length allowed
-    max_password_length = int(input("What is the maximum length of the password? "))
+    try:
+        max_password_length = int(input("What is the maximum length of the password? "))
+        print(max_password_length)
+    except ZeroDivisionError:
+        print("You may only enter numbers")
+    except ValueError:
+        print("You cannot enter a non digit")
+
     # password length is randomly selected through secrets module in the range from min_password_length to max_password_length
     password_length = secrets.choice(range(min_password_length, max_password_length + 1))
     password = ""
     
     while True:
-        # password is set to empy
+        # password is set to empty
         # for loop to add characters to the password up to the password length
         for i in range(password_length):
             password += "".join(secrets.choice(characters))
