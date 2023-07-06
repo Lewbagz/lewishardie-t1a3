@@ -35,7 +35,7 @@ def print_options():
     [Enter anything else to exit..]
     """) 
 
-# function to view the json files
+# function to display the accounts in the json file
 def list_accounts():
     clear_terminal() #maybe
 
@@ -43,16 +43,14 @@ def list_accounts():
     print("""---------Your Accounts---------
 -------------------------------
 """)
-    # try:
-    #     with open("accounts.json", "r") as file:
-    #         accounts = json.load(file)      
+              
     accounts = load_accounts()
 
 
     if len(accounts) < 1:
-        print("-------------XXXXXX------------")
-        print("-------Empty Account List------")
-        print("-------------XXXXXX------------")
+        print("""-------------------------------
+------ Empty Account List -----
+-------------------------------""")
 
     for website, account_info in accounts.items():
         username = account_info["Username"]
@@ -68,7 +66,7 @@ def list_accounts():
         ------------------------------
         """)
 
-# function to add accounts to the json file
+# function to add additional accounts to the json file
 def add_accounts():
     clear_terminal()
     print("---------Add new account--------")
@@ -100,15 +98,24 @@ def remove_account():
     clear_terminal()
 
     print("-----------Remove Account-----------")
-    list_accounts()
+    
+    website = input("Enter the account name> ")
+    
+    accounts = load_accounts()
 
-    account = int(input("Enter your account name or sequence> "))
-
-    try:
-        del load_accounts[account]
-        print(account, "was deleted")
-    except ValueError:
-        print(account, "was not found")
+    if website in accounts:
+        del accounts[website]
+        save_accounts(accounts)
+        print(f"The account '{website}' has been removed.")
+    else:
+        print(f"The account '{website}' does not exist.")
+   
+   
+    # try:
+    #     del load_accounts[account]
+    #     print(account, "was deleted")
+    # except ValueError:
+    #     print(account, "was not found")
 
 #     list_accounts()
 
