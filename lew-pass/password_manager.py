@@ -1,44 +1,26 @@
 from password_generator import generate_password
 from clear import clear_terminal
+import json
+import os
 
-# class Password_Manager:
-#     def __init__ (self):
-#         self.key = None
-#         self.password_file = None
-#         self.password_dict = {}
 
-#     def create password file
+# Function to load the json file
+def load_accounts():
+   if os.path.exists("accounts.json"):
+        with open ("accounts.json", "r") as file:
+            try:
+                return json.load(file) 
+            except json.decoder.JSONDecodeError:
+                return{}
+   else:
+       return{}
 
-#     def load password file
+# Function to save the json file
+def save_accounts(accounts):
+    with open("accounts.json", "w") as file:
+        json.dump(accounts, file, indent=4)
 
-#     def add password
-
-#     def get password
-
-# def main():
-
-# password = {
-#     "email": "example",
-#     "facebook": "facebookpassword",
-#     "youtube": "youtubepassword",
-#     "forum" : "forumpassword",
-# }
-
-    # Enter options from the list below
-
-    # [1] List all task
-    # [2] Add new task
-    # [3] Remove task
-    # [4] Mark task as completed
-    # [Enter anything else to exit..]
-    # """) 
-    
-
-accounts = {
-
-}
-
-# functions
+# function to display the terminal options
 def print_options():
     clear_terminal() #maybe
 
@@ -49,10 +31,11 @@ def print_options():
 
     [1] List Accounts
     [2] Add Accounts
-    [3] Get Password
+    [3] Remove Account
     [Enter anything else to exit..]
     """) 
 
+# function to view the json files
 def list_accounts():
     clear_terminal() #maybe
 
@@ -60,32 +43,49 @@ def list_accounts():
     print("""---------Your Accounts---------
 -------------------------------
 """)
+    # try:
+    #     with open("accounts.json", "r") as file:
+    #         accounts = json.load(file)      
+    accounts = load_accounts()
 
-    if len(accounts.keys()) < 1:
+
+    if len(accounts) < 1:
         print("-------------XXXXXX------------")
         print("-------Empty Account List------")
         print("-------------XXXXXX------------")
-    
+
     for website, account_info in accounts.items():
         username = account_info["Username"]
         password = account_info["Password"]
         email = account_info["Email"]
-        print(f"""{website}
-Username: {username}
-Password: {password}
-Email: {email}
-------------------------------
-""")
+            
+        print(f"""
+        {website}
+        ------------------------------
+        Username: {username}
+        Password: {password}
+        Email: {email}
+        ------------------------------
+        """)
 
+# function to add accounts to the json file
 def add_accounts():
     clear_terminal()
     print("---------Add new account--------")
     website = input("What account is this for? ")
     username = input("what is your username for the account? ")
+    #check for @ and .com for email
     email = input("What is the email associated with the account? ")
+
     password = generate_password()
+
+    # accounts[website] = {"Username": username, "Password": password, "Email": email}
+
+    accounts = load_accounts()
     accounts[website] = {"Username": username, "Password": password, "Email": email}
-    print("New website added")
+    save_accounts(accounts)
+    
+    print("New account added")
     print(f"""
     -------- {website} --------
     Your Username is : {username}
@@ -93,58 +93,51 @@ def add_accounts():
     Your Password is : {password}
 """)
 
+def get_password():
+    pass
+
+def remove_account():
+    clear_terminal()
+
+    print("-----------Remove Account-----------")
+    list_accounts()
+
+    account = int(input("Enter your account name or sequence> "))
+
+    try:
+        del load_accounts[account]
+        print(account, "was deleted")
+    except ValueError:
+        print(account, "was not found")
+
+#     list_accounts()
+
+#     account = input("Enter your task name or sequence> ")
+
+#     try:
+#         del accounts[account]
+#         print(account, "was deleted")
+#     except KeyError:
+#         print(account, "was not found")
+
+
 while True:
     print_options()
-
-    option = int(input("Enter your selection> "))
+    try:
+        option = int(input("Enter your selection> "))
+    except ValueError:
+        break
 
     match option:
         case 1:
             list_accounts()
         case 2:
             add_accounts()
+        case 3:
+            remove_account()
         case _:
             break
 
     input("press enter to continue...")
 
 print("Application closed")
-
-
-#  Password manager
-
-# password_list = []
-
-# password_length = 12-64 characters long
-
-
-
-
-# Generate a random password
-
-# User Input 
-
-#     User Account
-
-#     User Email
-
-
-# Output
-
-#     Generate Random Password
-
-#     password length 10-20
-
-#     Random password to contain specific special characters ( 1 upper, 1 lower, 1 number, 1 punctuation)
-
-
-
-
-
-# Password manager
-
-# Create a file on computer
-
-#     Account Name
-#     Email
-#     Password

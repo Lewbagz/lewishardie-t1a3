@@ -20,7 +20,7 @@ Select what you would like to do:
 #     input("Enter any key to continue: ")
 
 def register():
-    db = open("database.txt", "r")
+    db = open("data.txt", "r")
 
     while True:
         username = input("Create a username: ")
@@ -44,7 +44,7 @@ def register():
         else:
             break
     
-    db = open("database.txt", "a")
+    db = open("data.txt", "a")
     db.write(username+", "+password+"\n")
 
 
@@ -78,16 +78,16 @@ while True:
 
 
 
-def validate(username, password):
-    return username == "lewis" & password == "123"
+# def validate(username, password):
+#     return username == "lewis" & password == "123"
 
-username = input("Enter your username> ")
-password = input("Enter your username> ")
+# username = input("Enter your username> ")
+# password = input("Enter your username> ")
 
-print("welcome back")
+# print("welcome back")
 
 
-print("your details", username, password, "are", validate(username, password))
+# print("your details", username, password, "are", validate(username, password))
 
 
 
