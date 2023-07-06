@@ -59,23 +59,25 @@ def list_accounts():
     # for k,v in tasks.items(): # k,v stands for key and value. a way to extract those from the list
     #     print(k,v)
 
-    print("---------Your Accounts---------")
+    print("""---------Your Accounts---------
+-------------------------------
+    """)
 
     if len(accounts.keys()) < 1:
-        print("-----------XXXXXX-----------")
+        print("-------------XXXXXX------------")
         print("-------Empty Account List------")
-        print("-----------XXXXXX-----------")
+        print("-------------XXXXXX------------")
     
     for website, account_info in accounts.items():
         username = account_info["Username"]
         password = account_info["Password"]
         email = account_info["Email"]
         print(f"""{website}
-              Username: {username}
-              Password: {password}
-              Email: {email}
-------------------------
-              """)
+Username: {username}
+Password: {password}
+Email: {email}
+------------------------------
+""")
 
 #     for website, username in accounts.items():
 #         print(f"""
@@ -133,3 +135,41 @@ while True:
 
 print("Application closed")
 
+
+ Password manager
+
+# password_list = []
+
+# password_length = 12-64 characters long
+
+
+
+
+# Generate a random password
+
+# User Input 
+
+#     User Account
+
+#     User Email
+
+
+# Output
+
+#     Generate Random Password
+
+#     password length 10-20
+
+#     Random password to contain specific special characters ( 1 upper, 1 lower, 1 number, 1 punctuation)
+
+
+
+
+
+# Password manager
+
+# Create a file on computer
+
+#     Account Name
+#     Email
+#     Password
