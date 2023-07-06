@@ -40,12 +40,12 @@ accounts = {
 
 # functions
 def print_options():
-    clear_terminal()
+    clear_terminal() #maybe
 
     print("""
     Account options
 
-    Enter options from the list below
+    Select from the options below, by inputing the revelant number.
 
     [1] List Accounts
     [2] Add Accounts
@@ -54,14 +54,12 @@ def print_options():
     """) 
 
 def list_accounts():
-    clear_terminal()
+    clear_terminal() #maybe
 
-    # for k,v in tasks.items(): # k,v stands for key and value. a way to extract those from the list
-    #     print(k,v)
 
     print("""---------Your Accounts---------
 -------------------------------
-    """)
+""")
 
     if len(accounts.keys()) < 1:
         print("-------------XXXXXX------------")
@@ -79,13 +77,6 @@ Email: {email}
 ------------------------------
 """)
 
-#     for website, username in accounts.items():
-#         print(f"""
-#     -------- {website} --------
-#     {username} 
-# """)
-#         print("----------------------------")
-
 def add_accounts():
     clear_terminal()
     print("---------Add new account--------")
@@ -102,22 +93,6 @@ def add_accounts():
     Your Password is : {password}
 """)
 
-
-# master_password = ""
-# master_password = (input("What is the master password? "))
-
-
-
-# def check_password():
-
-#     if master_password == "test":
-#         print("Right password")
-#     else:
-#         print("Wrong password")
-
-# def save_password():
-
-# run our application
 while True:
     print_options()
 
@@ -136,7 +111,7 @@ while True:
 print("Application closed")
 
 
- Password manager
+#  Password manager
 
 # password_list = []
 
