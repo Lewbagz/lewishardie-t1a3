@@ -57,12 +57,12 @@ The maximum password must be greater than the minimum password to proceed!
 You must enter a number to proceed!
 -----------------------------------
 """)
-    
+
     # password length is randomly selected through secrets module in the range from min_password_length to max_password_length
     password_length = secrets.choice(range(min_password_length, max_password_length + 1))
     # password is set to empty
     password = ""
-    
+
     while True:
         # for loop to add characters to the password up to the password length
         for i in range(password_length):
@@ -74,6 +74,6 @@ You must enter a number to proceed!
                 and sum(c in digits for c in password)
                 and any(c in special_characters for c in password)):
             break
-    
+
     # print(password)
     return password

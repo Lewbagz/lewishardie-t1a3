@@ -2,7 +2,7 @@ from password_generator import generate_password
 from clear import clear_terminal
 import json
 import os
-
+import pyperclip
 
 # Function to load the json file
 def load_accounts():
@@ -31,7 +31,8 @@ def print_options():
 
     [1] List Accounts
     [2] Add Accounts
-    [3] Remove Account
+    [3] Get Password
+    [4] Remove Account
     [Enter anything else to exit..]
     """) 
 
@@ -59,18 +60,19 @@ def list_accounts():
             
         print(f"""
         {website}
-        ------------------------------
-        Username: {username}
-        Password: {password}
-        Email: {email}
-        ------------------------------
-        """)
+------------------------------
+Username: {username}
+Password: {password}
+Email: {email}
+------------------------------
+""")
+        
 
 # function to add additional accounts to the json file
 def add_accounts():
     clear_terminal()
     print("---------Add new account--------")
-    website = input("What account is this for? ")
+    website = input("What account is this for? ").upper()
     username = input("what is your username for the account? ")
     #check for @ and .com for email
     email = input("What is the email associated with the account? ")
@@ -91,17 +93,65 @@ def add_accounts():
     Your Password is : {password}
 """)
 
+
 def get_password():
+    clear_terminal()
+
+    print("----------- Get Password -----------")
+
+    accounts = load_accounts()
+
+
+    # if len(accounts) < 1:
+    #     print("""-------------------------------
+    # ------ Empty Account List -----
+    # -------------------------------""")
+
+    for website, account_info in accounts.items():
+        # username = account_info["Username"]
+        password = account_info["Password"]
+        # email = account_info["Email"]
+            
+        print(f"""--------------
+        {website}
+--------------
+""")
+    website = input("Which account password would you like to retrieve?: ").upper()
+  
+    if website in accounts:
+        accounts[website]
+        pyperclip.copy(password)
+        print(f"The account '{website}' password has been copied to your clipboard.")
+    else:
+        print(f"The account '{website}' does not exist.")
     pass
+
+
 
 def remove_account():
     clear_terminal()
 
-    print("-----------Remove Account-----------")
-    
-    website = input("Enter the account name> ")
-    
+    print("----------- Remove Account -----------")
+              
     accounts = load_accounts()
+
+    if len(accounts) < 1:
+        print("""-------------------------------
+------ Empty Account List -----
+-------------------------------""")
+
+    for website, account_info in accounts.items():
+        username = account_info["Username"]
+        # password = account_info["Password"]
+        email = account_info["Email"]
+            
+        print(f"""
+------------------------------------------------
+        {website}: {username}, {email}
+------------------------------------------------
+""")
+
+    website = input("Enter the account name to remove: ").upper()
 
     if website in accounts:
         del accounts[website]
@@ -109,24 +159,6 @@ def remove_account():
         print(f"The account '{website}' has been removed.")
     else:
         print(f"The account '{website}' does not exist.")
-   
-   
-    # try:
-    #     del load_accounts[account]
-    #     print(account, "was deleted")
-    # except ValueError:
-    #     print(account, "was not found")
-
-#     list_accounts()
-
-#     account = input("Enter your task name or sequence> ")
-
-#     try:
-#         del accounts[account]
-#         print(account, "was deleted")
-#     except KeyError:
-#         print(account, "was not found")
-
 
 while True:
     print_options()
@@ -141,6 +173,8 @@ while True:
         case 2:
             add_accounts()
         case 3:
+            get_password()
+        case 4:
             remove_account()
         case _:
             break
