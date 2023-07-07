@@ -3,7 +3,7 @@ from clear import clear_terminal
 import json
 import os
 import pyperclip
-from cryptography.fernet import Fernet
+
 
 # Function to load the json file
 def load_accounts():
@@ -20,6 +20,7 @@ def load_accounts():
 def save_accounts(accounts):
     with open("accounts.json", "w") as file:
         json.dump(accounts, file, indent=4)
+
 
 # function to display the terminal options
 def print_options():
@@ -83,15 +84,17 @@ def add_accounts():
     # accounts[website] = {"Username": username, "Password": password, "Email": email}
 
     accounts = load_accounts()
-    accounts[website] = {"Username": username, "Password": password, "Email": email}
+    accounts.update({website: {"Username": username, "Password": password, "Email": email}})
     save_accounts(accounts)
     
+    # accounts.update({website: {"Username": username, "Password": password, "Email": email}})
+
     print("New account added")
     print(f"""
     -------- {website} --------
     Your Username is : {username}
-    Your  Email   is : {email} 
     Your Password is : {password}
+    Your  Email   is : {email} 
 """)
 
 
@@ -127,13 +130,11 @@ def get_password():
         print(f"The account '{website}' does not exist.")
     pass
 
-
-
 def remove_account():
     clear_terminal()
 
     print("----------- Remove Account -----------")
-              
+
     accounts = load_accounts()
 
     if len(accounts) < 1:
@@ -141,25 +142,27 @@ def remove_account():
 ------ Empty Account List -----
 -------------------------------""")
 
-    for website, account_info in accounts.items():
+    for index, (website, account_info) in enumerate(accounts.items()):
         username = account_info["Username"]
         # password = account_info["Password"]
         email = account_info["Email"]
-            
+
         print(f"""
 ------------------------------------------------
-        {website}: {username}, {email}
-------------------------------------------------
-""")
-
-    website = input("Enter the account name to remove: ").upper()
-
-    if website in accounts:
-        del accounts[website]
-        save_accounts(accounts)
-        print(f"The account '{website}' has been removed.")
-    else:
-        print(f"The account '{website}' does not exist.")
+[{index + 1}] {website}: {username}, {email}
+------------------------------------------------""")
+    while True:
+        try:    
+            selection = int(input("Enter the number of the account to remove: "))
+            if selection in range(1, len(accounts) + 1):
+                website = list(accounts.keys())[selection - 1]
+                del accounts[website]
+                save_accounts(accounts)
+                print(f"The account '{website}' has been removed.")
+            else:
+                print("Invalid selection.")
+        except ValueError:
+            break
 
 while True:
     print_options()
