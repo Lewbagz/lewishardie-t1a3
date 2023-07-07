@@ -3,6 +3,7 @@ from clear import clear_terminal
 import json
 import os
 import pyperclip
+from cryptography.fernet import Fernet
 
 # Function to load the json file
 def load_accounts():
