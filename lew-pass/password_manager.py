@@ -52,7 +52,7 @@ def list_accounts():
 
     if len(accounts) < 1:
         print("""-------------------------------
------- Empty Account List -----
+------ Account List Empty -----
 -------------------------------""")
 
     for website, account_info in accounts.items():
@@ -105,12 +105,6 @@ def get_password():
 
     accounts = load_accounts()
 
-
-    # if len(accounts) < 1:
-    #     print("""-------------------------------
-    # ------ Empty Account List -----
-    # -------------------------------""")
-
     for website, account_info in accounts.items():
         # username = account_info["Username"]
         password = account_info["Password"]
@@ -120,6 +114,7 @@ def get_password():
         {website}
 --------------
 """)
+        
     website = input("Which account password would you like to retrieve?: ").upper()
   
     if website in accounts:

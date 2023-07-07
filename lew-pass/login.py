@@ -1,4 +1,6 @@
 from clear import clear_terminal
+import bcrypt
+
 
 def welcome_screen():
     clear_terminal()
@@ -19,7 +21,8 @@ Select what you would like to do:
 #     print("You've successfully registered")
 #     input("Enter any key to continue: ")
 
-def register():
+
+def register_user():
     db = open("data.txt", "r")
 
     while True:
@@ -43,7 +46,12 @@ def register():
             print("Passwords don't match, please try again.")
         else:
             break
-    
+
+        password = b""
+
+        hahsed = bcrypt.hashpassword(password, bcrypt.gensalt())
+
+
     db = open("data.txt", "a")
     db.write(username+", "+password+"\n")
 
@@ -61,7 +69,15 @@ def register():
 
 
 def login():
-    pass
+    
+    username = input("What is your username: ")
+    password = input("what is your password: ").encode("utf-8")
+
+    if bcrypt.checkpw(password, hashed):
+        print("it matches")
+        return # password_manager
+    else:
+        print("thats wrong dawg")
 
 
 # select between register a username and loging in
@@ -71,7 +87,7 @@ while True:
     selection = int(input(""))
     match selection:
         case 1:
-            register()
+            register_user()
         case 2:
             login()
 

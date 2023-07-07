@@ -1,104 +1,126 @@
-from cryptography.fernet import Fernet
+import json
+from clear import clear_terminal
+import bcrypt
+import os
 
-class Password_Manager:
+DATABASE_FILE = "database.json"
 
-    def __init__(self):
-        self.key = None
-        self.password_file = None#("accounts.json")
-    
-    def create_key(self, path):
-        self.key = Fernet.generate_key()
-        with open(path, 'wb') as file:
-            file.write(self.key)
+# Function to display the login screen
+def welcome_screen():
+    clear_terminal()
 
-    def load_key(self, path):
-        with open(path, 'rb') as file:
-            self.key = file.read()
+    print("""---------------------------------
+             Welcome
+---------------------------------
+---------------------------------
+Select what you would like to do:
+---------------------------------
+[1] Register
+[2] Login
+---------------------------------
+"""
+)
 
-    def create_password_file(self, path, initial_values=None):
-        self.password_file = path
+# Function to hash the password
+def hash_password(password):
+    hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+    return hashed_password.decode()
 
-        if initial_values is not None:
-            for key, value in initial_values.items():
-                pass # todo: add password function
-
-    def load_password_file(self, path):
-        self.password_file = path
+def register_user():
+    while True:
+        username = input("Create a username: ")
         
-        with open(path, 'r') as file:
-            for line in file:
-                site, encrypted = line.split(":")
-                self.password_dict[site] = Fernet(self.key).decrypt(encrypted.encode()).decode()
+        if username_exists(username):
+            print("Username already exists. Please try a different username.")
+        else:
+            break
+    
+    while True:
+        password = input("Create a password: ")
+        password1 = input("Confirm your password: ")
 
-    def add_password(self, site, password):
-        self.password_dict[site] = password
+        if len(password) < 8:
+            print("Password is too short, please try again.")
+        if password != password1:
+            print("Passwords don't match, please try again.")
+        else:
+            break
 
-        if self.password_file is not None:
-            with open(self.password_file, 'a+') as file:
-                encrypted = Fernet(self.key).encrypt(password.encode())
-                file.write(site + ":" + encrypted.decode() + "\n")
+    # Hash the password
+    hashed_password = hash_password(password)
 
-    def get_password(self, site):
-        return self.password_dict[site]
+    # Store the username and hashed password in the database (JSON file)
+
+    # if os.path.exists(DATABASE_FILE):
+    #     with open(DATABASE_FILE, "r") as db_file:
+    #         try:
+    #             data = json.load(db_file)
+    #         except json.decoder.JSONDecodeError:
+    #             data = {}
+    # else:
+    #     data = {}
+    with open(DATABASE_FILE, "r") as db_file:
+        data = json.load(db_file)
+
+    data[username] = hashed_password
+
+    with open(DATABASE_FILE, "w") as db_file:
+        json.dump(data, db_file)
+
+    clear_terminal()
+    print("You've successfully registered")
+    print(f"Username: {username}")
+    input("Enter any key to continue: ")
+
+def username_exists(username):
+    with open(DATABASE_FILE, "r") as db_file:
+        data = json.load(db_file)
+        return username in data
+
+def login():
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+
+    with open(DATABASE_FILE, "r") as db_file:
+        data = json.load(db_file)
+    
+    if username in data:
+        hashed_password = data[username]
+        if bcrypt.checkpw(password.encode(), hashed_password.encode()):
+            print("Login successful")
+        else:
+            print("Invalid username or password. Please try again.")
+    
+    clear_terminal()
+    print("You've successfully logged in")
+    input("Enter any key to continue: ")
 
 def main():
-    password = {
-        "email": "1234567",
-        "facebook": "myfbpassword",
-        "youtube": "hellowworld123",
-        "something": "myfavouritepassword",
-    }
+    if not os.path.exists(DATABASE_FILE):
+        with open(DATABASE_FILE, "w") as db_file:
+            db_file.write("{}")
 
-    pm = Password_Manager()
+    while True:
+        welcome_screen()
+  
+        # selection = input("Enter your choice: ")
+        # if selection == "1":
+        #     register_user()
+        # elif selection == "2":
+        #     login()
+        # elif selection == "3":
+        #     break
 
-    print("""WHat do you want to do?
-    (1) Create a new key
-    (2) Create a new key
-    (3) Create a new key
-    (4) Create a new key
-    (5) Create a new key
-    (6) Create a new key
-    """)
+        selection = int(input("Enter your choice: "))
+        
+        match selection:
+            case 1:
+                register_user()
+            case 2:
+                login()
+            case _:
+                break
 
-    done = False
+    input("press enter to continue...")
 
-    while not done:
-
-        choice = input("Enter your choice: ")
-        if choice == "1":
-            path = input("Enter path: ")
-            pm.create_key(path)
-        elif choice == "2":
-            path = input("Enter path: ")
-            pm.load_key(path)
-        elif choice == "3":
-            path = input("Enter path: ")
-            pm.create_password_file(path, password)
-        elif choice == "4":
-            path = input("Enter path: ")
-            pm.load_password_file(path)
-        elif choice == "5":
-            site = input("Enter the site: ")
-            password = input("Enter the password: ")
-            pm.add_password(site, password)
-        elif choice == "6":
-            site = input("What site do you want: ")
-            print(f"Password for {site} is {pm.get_password(site)}")
-        elif choice == "q":
-            done = True
-            print("Bye")
-            
-
-# pm = Password_Manager()
-# pm.create_key(None)
-
-# def check_password():
-#     password = "test"
-
-#     if password == txt.get():
-#         print("Right Password")
-#     else:
-#         print("Wrong Password")
-
-
-# # check_password()
+print("Application closed")

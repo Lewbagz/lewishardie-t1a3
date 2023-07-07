@@ -8,7 +8,6 @@ def generate_password():
     letters = string.ascii_letters
     digits = string.digits
     special_characters = string.punctuation
-
     characters = letters + digits + special_characters
 
     # password length
