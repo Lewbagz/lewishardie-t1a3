@@ -5,7 +5,6 @@ import bcrypt
 import stdiomask
 
 
-
 # def encoded_input(message):
 #     print(message, end="", flush=True)
 #     pw = ""

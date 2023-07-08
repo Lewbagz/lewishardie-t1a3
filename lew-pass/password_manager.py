@@ -5,10 +5,36 @@ import os
 import pyperclip
 
 
+## CLASS SETUP IF TIME ALLOWS, trial later
+
+# class Website:
+#     def __init__(self, username, email, password):
+#         self.username = username
+#         self.email = email
+#         self.password = password
+
+#     def print_info(self):
+#         print(self.username, self.email, self.password)
+    
+#     def save_to_json(self, filename):
+#         website_dict = {'username': self.username, 'email': self.email, 'password': self.password}
+#         with open(filename, 'w') as file:
+#             file.write(json.dumps(website_dict, indent=4))
+    
+#     def load_from_json(self, filename):
+#         with open(filename, 'r') as file:
+#             data = json.loads(file.read())
+        
+#         self.username = data['username']
+#         self.email = data['email']
+#         self.password = data['password']
+
+
+
 # Function to load the json file
 def load_accounts():
    if os.path.exists("accounts.json"):
-        with open ("accounts.json", "r") as file:
+        with open("accounts.json", "r") as file:
             try:
                 return json.load(file) 
             except json.decoder.JSONDecodeError:
