@@ -1,7 +1,21 @@
 import json
 from clear import clear_terminal
-import bcrypt
 import os
+import bcrypt
+import stdiomask
+
+
+
+# def encoded_input(message):
+#     print(message, end="", flush=True)
+#     pw = ""
+#     while True:
+#         symbol = getch.getch()
+#         if symbol == "\n" or symbol == "\r":
+#             break
+#         print("*", end="", flush=True)
+#     print()
+#     return pw
 
 DATABASE_FILE = "database.json"
 
@@ -29,19 +43,20 @@ def hash_password(password):
 def register_user():
     while True:
         username = input("Create a username: ")
-        
+        # Check to see if username already exsits in database
         if username_exists(username):
             print("Username already exists. Please try a different username.")
         else:
             break
     
     while True:
-        password = input("Create a password: ")
-        password1 = input("Confirm your password: ")
+        # Get and confirm password, adding * to visual input for added security
+        password = stdiomask.getpass("Create a password: ", '*')
+        password1 = stdiomask.getpass("Confirm your password: ", '*')
 
         if len(password) < 8:
             print("Password is too short, please try again.")
-        if password != password1:
+        elif password != password1:
             print("Passwords don't match, please try again.")
         else:
             break
@@ -51,21 +66,13 @@ def register_user():
 
     # Store the username and hashed password in the database (JSON file)
 
-    # if os.path.exists(DATABASE_FILE):
-    #     with open(DATABASE_FILE, "r") as db_file:
-    #         try:
-    #             data = json.load(db_file)
-    #         except json.decoder.JSONDecodeError:
-    #             data = {}
-    # else:
-    #     data = {}
     with open(DATABASE_FILE, "r") as db_file:
         data = json.load(db_file)
 
     data[username] = hashed_password
 
     with open(DATABASE_FILE, "w") as db_file:
-        json.dump(data, db_file)
+        json.dump(data, db_file, indent=4)
 
     clear_terminal()
     print("You've successfully registered")
@@ -124,3 +131,5 @@ def main():
     input("press enter to continue...")
 
 print("Application closed")
+
+main()
