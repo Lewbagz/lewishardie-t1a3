@@ -1,5 +1,6 @@
-.venv/
-#ignore json files
-json
-.pytest_cache/
-__pycache__/
+__pycache__
+
+.venv
+.pytest_cache
+
+

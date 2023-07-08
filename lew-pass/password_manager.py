@@ -4,7 +4,6 @@ import json
 import os
 import pyperclip
 
-
 ## CLASS SETUP IF TIME ALLOWS, trial later
 
 # class Website:
@@ -32,9 +31,9 @@ import pyperclip
 
 
 # Function to load the json file
-def load_accounts():
-   if os.path.exists("accounts.json"):
-        with open("accounts.json", "r") as file:
+def load_accounts(user_file):
+   if os.path.exists(user_file):
+        with open(user_file, "r") as file:
             try:
                 return json.load(file) 
             except json.decoder.JSONDecodeError:
@@ -43,8 +42,8 @@ def load_accounts():
        return{}
 
 # Function to save the json file
-def save_accounts(accounts):
-    with open("accounts.json", "w") as file:
+def save_accounts(accounts, user_file):
+    with open(user_file, "w") as file:
         json.dump(accounts, file, indent=4)
 
 
@@ -61,19 +60,19 @@ def print_options():
     [2] Add Accounts
     [3] Get Password
     [4] Remove Account
+    [5] Log Out
     [Enter anything else to exit..]
     """) 
 
 # function to display the accounts in the json file
-def list_accounts():
-    clear_terminal() #maybe
-
+def list_accounts(user_file):
+    clear_terminal()
 
     print("""---------Your Accounts---------
 -------------------------------
 """)
               
-    accounts = load_accounts()
+    accounts = load_accounts(user_file)
 
 
     if len(accounts) < 1:
@@ -83,80 +82,107 @@ def list_accounts():
 
     for website, account_info in accounts.items():
         username = account_info["Username"]
-        password = account_info["Password"]
         email = account_info["Email"]
+        password = account_info["Password"]
             
         print(f"""
         {website}
 ------------------------------
 Username: {username}
-Password: {password}
 Email: {email}
+Password: {password}
 ------------------------------
 """)
+    
+    input("press enter to continue...")
         
 
 # function to add additional accounts to the json file
-def add_accounts():
+def add_accounts(user_file):
     clear_terminal()
-    print("---------Add new account--------")
-    website = input("What account is this for? ").upper()
-    username = input("what is your username for the account? ")
-    #check for @ and .com for email
-    email = input("What is the email associated with the account? ")
-
-    password = generate_password()
-
-    # accounts[website] = {"Username": username, "Password": password, "Email": email}
-
-    accounts = load_accounts()
-    accounts.update({website: {"Username": username, "Password": password, "Email": email}})
-    save_accounts(accounts)
+    print("--------- Add new account --------")
+    print("--------- Enter no value to return --------")
     
-    # accounts.update({website: {"Username": username, "Password": password, "Email": email}})
+    website = input("What account is this for? ").upper()
+    if (website == ""):
+        return
+    username = input("What is your username for the account? ")
+    if (username == ""):
+        return
+    
+    while True:
+        email = input("What is the email associated with the account? ")
+        # return to welcome screen with null entry
+        if "@" in email and "." in email:
+            break
+        else:
+            print("Invalid Email")
 
+        if (email == ""):
+            return
+
+            
+    # Run password generator
+    password = generate_password()
+    # if (password == ""):
+    #     return
+
+    accounts = load_accounts(user_file)
+    accounts.update({website: {"Username": username, "Email": email, "Password": password}})
+    save_accounts(accounts, user_file)
+    
     print("New account added")
     print(f"""
     -------- {website} --------
     Your Username is : {username}
-    Your Password is : {password}
     Your  Email   is : {email} 
+    Your Password is : {password}
 """)
+    
+    input("press enter to continue...")
 
 
-def get_password():
+def get_password(user_file):
     clear_terminal()
 
     print("----------- Get Password -----------")
 
-    accounts = load_accounts()
+    accounts = load_accounts(user_file)
 
-    for website, account_info in accounts.items():
+    if len(accounts) < 1:
+        print("""-------------------------------
+------ Empty Account List -----
+-------------------------------""")
+              
+    for index, (website, account_info) in enumerate(accounts.items()):
         # username = account_info["Username"]
         password = account_info["Password"]
         # email = account_info["Email"]
             
         print(f"""--------------
-        {website}
---------------
-""")
+        [{index + 1}] {website}
+--------------""")
+    
+    while True:
+        try:
+            selection = int(input("Which account password would you like to retrieve?: "))
         
-    website = input("Which account password would you like to retrieve?: ").upper()
-  
-    if website in accounts:
-        accounts[website]
-        pyperclip.copy(password)
-        print(f"The account '{website}' password has been copied to your clipboard.")
-    else:
-        print(f"The account '{website}' does not exist.")
-    pass
+            if selection in range(1, len(accounts) + 1):
+                accounts[website]
+                pyperclip.copy(password)
+                print(f"The account '{website}' password has been copied to your clipboard.")
+            else:
+                print("Invalid selection.")
+        except ValueError:
+            print("Invalid selection.")
+        
 
-def remove_account():
+def remove_account(user_file):
     clear_terminal()
 
     print("----------- Remove Account -----------")
 
-    accounts = load_accounts()
+    accounts = load_accounts(user_file)
 
     if len(accounts) < 1:
         print("""-------------------------------
@@ -168,8 +194,7 @@ def remove_account():
         # password = account_info["Password"]
         email = account_info["Email"]
 
-        print(f"""
-------------------------------------------------
+        print(f"""------------------------------------------------
 [{index + 1}] {website}: {username}, {email}
 ------------------------------------------------""")
     while True:
@@ -178,31 +203,57 @@ def remove_account():
             if selection in range(1, len(accounts) + 1):
                 website = list(accounts.keys())[selection - 1]
                 del accounts[website]
-                save_accounts(accounts)
+                save_accounts(accounts, user_file)
                 print(f"The account '{website}' has been removed.")
             else:
                 print("Invalid selection.")
         except ValueError:
             break
 
-while True:
-    print_options()
-    try:
-        option = int(input("Enter your selection> "))
-    except ValueError:
-        break
-
-    match option:
-        case 1:
-            list_accounts()
-        case 2:
-            add_accounts()
-        case 3:
-            get_password()
-        case 4:
-            remove_account()
-        case _:
+def log_out():
+    clear_terminal()
+    print("---------Log out of account--------")
+    while True:    
+        try:
+            option = input("Are you sure you want to log out?[y/n]: ")
+        except ValueError:
             break
+
+        match option:
+            case "y":
+                import main
+                main.start_main()
+            case _:
+                break
+
+def start_password_management(username, user_file):
+
+    # accounts = load_accounts(user_file)
+
+    print(f"Hey {username}")
+
+    while True:
+        print_options()
+        try:
+            option = int(input("Enter your selection> "))
+        except ValueError:
+            break
+
+        match option:
+            case 1:
+                list_accounts(user_file)
+            case 2:
+                add_accounts(user_file)
+            case 3:
+                get_password(user_file)
+            case 4:
+                remove_account(user_file)
+            case 5:
+                log_out()
+            case _:
+                break
+    
+    # save_accounts(accounts, user_file)
 
     input("press enter to continue...")
 
