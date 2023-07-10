@@ -1,21 +1,20 @@
 import json
 from clear import clear_terminal
 import os
-
-
 import bcrypt
-
 import stdiomask
+import sys
 
+DATABASE_FILE = "database.json"
 
-def validation(username, password, data):
-    if username in data:
-        hashed_password = data[username]
+# Function to validate if the encrypted password matches the entered password
+def validation(user, password, data):
+    if user in data:
+        hashed_password = data[user]
         if bcrypt.checkpw(password.encode(), hashed_password.encode()):
             return True
     return False
 
-DATABASE_FILE = "database.json"
 
 # Function to display the login screen
 def welcome_screen():
@@ -40,75 +39,99 @@ def hash_password(password):
     return hashed_password.decode()
 
 def register_user():
+    clear_terminal()
+    print("""---------------------------------
+    Register your Username
+---------------------------------
+    Typing "exit" will return 
+    you to the welcome screen.
+---------------------------------""")
+          
     while True:
-        username = input("Create a username: ")
-        # Check to see if username already exists in the database
-        if username_exists(username):
-            print("Username already exists. Please try a different username.")
+
+        user = input("Create a User: ")
+        
+        if user == "exit":
+            return
+
+        if user == "":
+            print("User name cannot be empty")
+        elif user_exists(user):
+            print("User already exists. Please try a different user.")
         else:
             break
 
+    clear_terminal()
+    print("""---------------------------------
+    Select your Password
+---------------------------------
+Password must be 12 characters long
+---------------------------------
+    Pressing enter will return 
+    you to the welcome page.
+---------------------------------""")           
+            
     while True:
         # Get and confirm password, adding * to visual input for added security
         password = stdiomask.getpass("Create a password: ", "*")
+
+        if password == "":
+            print("Registration canceled.")
+            return  # Break out of the loop
+
         password1 = stdiomask.getpass("Confirm your password: ", "*")
 
-        if len(password) < 8:
-            print("Password is too short. Please try again.")
-        elif password != password1:
-            print("Passwords don't match. Please try again.")
-        else:
-            break
+        try:
+            if len(password) < 12:
+                print("Password is too short. Please try again.")
+            elif password != password1:
+                print("Passwords don't match. Please try again.")
+            else:
+                break
+        except ValueError:
+            print("Invalid")
 
     # Hash the password
     hashed_password = hash_password(password)
 
-    # Store the username and hashed password in the database (JSON file)
+    # Store the user and hashed password in the database (JSON file)
     with open(DATABASE_FILE, "r") as db_file:
         data = json.load(db_file)
 
-    data[username] = hashed_password
+    data[user] = hashed_password
 
     with open(DATABASE_FILE, "w") as db_file:
         json.dump(data, db_file, indent=4)
 
     # Create a user-specific database for the password manager to access
-    user_accounts_file = f"{username}_accounts.json"
+    user_accounts_file = f"{user}_accounts.json"
     with open(user_accounts_file, "w") as user_file:
         json.dump({}, user_file, indent=4)
 
     clear_terminal()
     print("You've successfully registered")
-    print(f"Username: {username}")
-    input("Enter any key to continue: ")
+    print(f"Username: {user}")
 
-def username_exists(username):
+def user_exists(user):
     with open(DATABASE_FILE, "r") as db_file:
         data = json.load(db_file)
-        return username in data
+        return user in data
 
 def login():
-    username = input("Enter your username: ")
+    user = input("Enter the Username: ")
     password = stdiomask.getpass("Enter your password: ", '*')
 
     with open(DATABASE_FILE, "r") as db_file:
         data = json.load(db_file)
-    
-    if validation(username, password, data):
+
+    if validation(user, password, data):
         print("Login successful")
         input("Enter any key to continue: ")
-        user_file = f"{username}_accounts.json"
+        user_file = f"{user}_accounts.json"
         import password_manager
-        password_manager.start_password_management(username, user_file)
+        password_manager.start_password_management(user, user_file)
     else:
         print("Invalid username or password. Please try again.")
-        input("Enter any key to continue: ")
-    
-    # user_database_file = f"{username}_database.json"
-    # if os.path.exists(user_database_file):
-    # password_manager.start_password_management(username, user_database_file)
-    #     else:
-    #         print("User database file not found. Please create an account or contact support.")
 
 def main():
     if not os.path.exists(DATABASE_FILE):
@@ -118,17 +141,22 @@ def main():
     while True:
         welcome_screen()
 
-        selection = int(input("Enter your choice: "))
+        selection = input("Enter your choice: ")
+
+        try:
+            selection = int(selection)
+            match selection:
+                case 1:
+                    register_user()
+                case 2:
+                    login()
+                case 3:
+                    sys.exit()
+                case _:
+                    print("INVALID SELECTION")
+        except ValueError:
+            print("value error")
         
-        match selection:
-            case 1:
-                register_user()
-            case 2:
-                login()
-            case _:
-                break
-
-
-    input("press enter to continue...")
+        input("Press enter to continue: ")
 
 print("Application closed")

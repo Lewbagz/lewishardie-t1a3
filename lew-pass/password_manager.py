@@ -3,6 +3,7 @@ from clear import clear_terminal
 import json
 import os
 import pyperclip
+import main
 
 ## CLASS SETUP IF TIME ALLOWS, trial later
 
@@ -46,23 +47,23 @@ def save_accounts(accounts, user_file):
     with open(user_file, "w") as file:
         json.dump(accounts, file, indent=4)
 
-
 # function to display the terminal options
 def print_options():
     clear_terminal() #maybe
-
-    print("""
+    print("""---------------------------------
     Account options
-
-    Select from the options below, by inputing the revelant number.
-
+---------------------------------
+Select from the options below, 
+by inputing the revelant number.
+---------------------------------
+---------------------------------
     [1] List Accounts
     [2] Add Accounts
     [3] Get Password
     [4] Remove Account
     [5] Log Out
     [Enter anything else to exit..]
-    """) 
+---------------------------------""") 
 
 # function to display the accounts in the json file
 def list_accounts(user_file):
@@ -93,15 +94,16 @@ Email: {email}
 Password: {password}
 ------------------------------
 """)
-    
-    input("press enter to continue...")
-        
 
 # function to add additional accounts to the json file
 def add_accounts(user_file):
     clear_terminal()
-    print("--------- Add new account --------")
-    print("--------- Enter no value to return --------")
+    print("""---------------------------------
+    Add Account
+---------------------------------
+Enter no value to retun
+---------------------------------
+---------------------------------""")
     
     website = input("What account is this for? ").upper()
     if (website == ""):
@@ -112,20 +114,17 @@ def add_accounts(user_file):
     
     while True:
         email = input("What is the email associated with the account? ")
-        # return to welcome screen with null entry
         if "@" in email and "." in email:
             break
         else:
             print("Invalid Email")
 
+        # return to welcome screen with null entry
         if (email == ""):
             return
 
-            
     # Run password generator
     password = generate_password()
-    # if (password == ""):
-    #     return
 
     accounts = load_accounts(user_file)
     accounts.update({website: {"Username": username, "Email": email, "Password": password}})
@@ -138,14 +137,12 @@ def add_accounts(user_file):
     Your  Email   is : {email} 
     Your Password is : {password}
 """)
-    
-    input("press enter to continue...")
-
 
 def get_password(user_file):
     clear_terminal()
 
     print("----------- Get Password -----------")
+    print("--------- Enter no value to return --------")
 
     accounts = load_accounts(user_file)
 
@@ -155,28 +152,31 @@ def get_password(user_file):
 -------------------------------""")
               
     for index, (website, account_info) in enumerate(accounts.items()):
-        # username = account_info["Username"]
         password = account_info["Password"]
-        # email = account_info["Email"]
-            
+
         print(f"""--------------
         [{index + 1}] {website}
 --------------""")
-    
+
     while True:
-        try:
-            selection = int(input("Which account password would you like to retrieve?: "))
         
+        selection = input("Which account password would you like to retrieve?: ")
+
+        if selection == "":
+            print("Returning you back to the main page")
+            input("press anything to continue")
+            return
+        
+        try:
+            selection = int(selection)
             if selection in range(1, len(accounts) + 1):
                 accounts[website]
                 pyperclip.copy(password)
                 print(f"The account '{website}' password has been copied to your clipboard.")
-            else:
-                print("Invalid selection.")
+
         except ValueError:
             print("Invalid selection.")
-        
-
+# function to remove account from user database         
 def remove_account(user_file):
     clear_terminal()
 
@@ -197,25 +197,34 @@ def remove_account(user_file):
         print(f"""------------------------------------------------
 [{index + 1}] {website}: {username}, {email}
 ------------------------------------------------""")
+
     while True:
+
+        selection = (input("Enter the number of the account to remove: "))
+
+        if selection == "":
+            print("Returning you back to the main page")
+            input("press anything to continue")
+            return
+        
         try:    
-            selection = int(input("Enter the number of the account to remove: "))
+            selection = int(selection)
             if selection in range(1, len(accounts) + 1):
                 website = list(accounts.keys())[selection - 1]
                 del accounts[website]
                 save_accounts(accounts, user_file)
                 print(f"The account '{website}' has been removed.")
-            else:
-                print("Invalid selection.")
+        
         except ValueError:
-            break
+            print("invalid")
 
 def log_out():
     clear_terminal()
-    print("---------Log out of account--------")
-    while True:    
+    print("--------- Log out of account --------")
+    while True:
         try:
             option = input("Are you sure you want to log out?[y/n]: ")
+
         except ValueError:
             break
 
@@ -223,19 +232,19 @@ def log_out():
             case "y":
                 import main
                 main.start_main()
+                return
             case _:
-                break
+                print("returning you page")
+                input("press anything to continue")
+                return
 
 def start_password_management(username, user_file):
 
-    # accounts = load_accounts(user_file)
-
-    print(f"Hey {username}")
-
     while True:
         print_options()
+
         try:
-            option = int(input("Enter your selection> "))
+            option = int(input("Enter your selection: "))
         except ValueError:
             break
 
@@ -252,8 +261,6 @@ def start_password_management(username, user_file):
                 log_out()
             case _:
                 break
-    
-    # save_accounts(accounts, user_file)
 
     input("press enter to continue...")
 
