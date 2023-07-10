@@ -63,7 +63,7 @@ In addition to these features, the application includes the following functional
 ## Style Guide
 ---
 <br>
-I have chosen to adhere to PEP 8 guidelines when styling my Python code to prioritize consistency and readability. By following these guidelines, I maintain a uniform coding style that is familiar to other developers, facilitating their understanding and collaboration. PEP 8 covers various aspects such as indentation, naming conventions, comments, and imports, which contribute to the creation of well-organized and clean code. Consistent indentation and line length enhance code visual appeal and legibility, while adhering to naming conventions ensures clarity and self-explanatory code. Embracing PEP 8 not only promotes maintainable and comprehensible code but also fosters a professional coding standard within the Python community.
+Through out the app, I've tried to use the PEP 8 guidelines when styling my Python code to prioritize consistency and readability. By following these guidelines, I maintain a uniform coding style that is familiar to other developers, facilitating their understanding and collaboration. PEP 8 covers various aspects such as indentation, naming conventions, comments, and imports, which contribute to the creation of well-organized and clean code. Consistent indentation and line length enhance code visual appeal and legibility, while adhering to naming conventions ensures clarity and self-explanatory code. Embracing PEP 8 not only promotes maintainable and comprehensible code but also fosters a professional coding standard within the Python community.
 
 <br>
 
@@ -110,34 +110,7 @@ The packages that are used with this terminal are as follows;
 - stdiomask `pip3 install stdiomask`
     - A cross-platform Python module for entering passwords to a stdio terminal and displaying a **** mask, which getpass cannot do.
 
-
 ## System / Hardware requiremnets
 
 The app is expected to preform well on practically any system, as it is extreamly light weight the requirements aren't high.
-
-
-requirements
-
-Implementation
-- variables and variable scope
-- loops and conditional control structures
-- write and utilise simple functions
-- error handling
-- input and output
-- importing a python package
-- using functions frmo a python package
-
-Apply Don't Repeat Yourself coding princicples
-
-Provide 2 tests
-    - cover a different section of the application
-    - state what is being tested
-    - provide at least TWO test cases and the expected results for each test case
-
-Outline of the testing procedure and cases should be included with the source code of application
-
-Utilise githup, make commits
-
-Utilise dev to faciliate the execution of the application
-- write a script which turns application into an exectuable
 

@@ -1,12 +1,14 @@
 #!/bin/bash
  
 # Check if Python is installed
+echo "Checking to see if python is installed..."
 if ! command -v python3 &/dev/null; 
     then
         echo "Python3 is not installed, Intalling now"
         sudo apt-get update
         sudo apt-get install python3 -y
 fi
+echo "Python 3 is installed.."
 
 echo "Creating a virtual environment..."
 python3 -m venv .venv
