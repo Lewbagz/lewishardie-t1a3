@@ -13,9 +13,11 @@ My github repository can be found at this [link](https://github.com/Lewbagz/lewi
 
 ## Link to Video Presentation:
 
-My video presentation can found at this [link](https://youtube.com)
+My video presentation can found at this [link](https://vimeo.com/843882538?share=copy)
 
-`youtube`
+`https://vimeo.com/843882538?share=copy`
+
+
 
 ---
 
@@ -43,11 +45,19 @@ In addition to these features, the application includes the following functional
 1. Master Password:
    - During the configuration phase, the user inputs a master password.
    - The master password is hashed and stored in a separate file from the password database, enhancing its security.
+   - Users sign in with their master password.
+
+![register](/docs/resources/register_user.png)
+
+![login](/docs/resources/login.png)
 
 2. Adding New Accounts:
-   - Users sign in with their master password.
    - They input the email, username, and website for the new account.
    - A random password generator is employed to generate a secure password for the account.
+
+    ![add new account](/docs/resources/add_account_1.png)
+
+    ![add new account](/docs/resources/add_account.png)
 
 3. Random Password Generator:
    - The password generator prompts the user to specify the minimum and maximum length of the password.
@@ -57,6 +67,28 @@ In addition to these features, the application includes the following functional
 4. Retrieving Passwords for an App:
    - When requesting a password, the user selects the account for which they need the password.
    - The password is then copied to the user's clipboard, allowing for easy access to the desired application or website.
+    
+    ![get password](/docs/resources/get_password.png)
+
+5. Deleting Account
+    - Users have the ability to delete accounts they've added
+
+    ![delete account](/docs/resources/remove_account.png)
+
+6. Viewing Acocunts
+    - Users can view all the accounts that they've added
+
+    ![account list](/docs/resources/list_accounts.png)
+
+7. Interface for account management
+    - After logging in users are greeted with an selection screen
+
+    ![account options](/docs/resources/account_options.png)
+
+8. Log Out
+    - Users have the ability to log out of their password manager when they are done
+
+    ![logout](/docs/resources/logout.png)
 
 ---
 
@@ -68,6 +100,16 @@ Through out the app, I've tried to use the PEP 8 guidelines when styling my Pyth
 <br>
 
 While adherence to PEP 8 is not obligatory, it is highly recommended for Python developers. By adhering to these guidelines, I contribute to a consistent and professional coding style that aligns with the fundamental principles of the Python language. Furthermore, following PEP 8 encourages effective collaboration and code sharing among developers by establishing a common framework of conventions and expectations. Overall, integrating PEP 8 guidelines ensures that my Python code meets high-quality standards and follows best practices, resulting in code that is more approachable and understandable for myself and fellow developers.
+
+---
+
+## Implementation
+---
+<br>
+
+### <strong>Coding without a plan</strong>
+<br>
+Going into this assignment I really had no idea what I was going to be doing or how I was going to implement it. I never setup an implementaion plan and I didnt really have any initial strategies as to how best to write out the code and implement it, and this was a huge development issue for me. I felt I was a bit behind with the course in general and so I kind of had to code and learn at the same time. This has created a bit of a monstrostity code wise, as looking at my code and seeing other examples online, I feel that it could've been a lot more efficient had I been a bit more studous earlier on in the course.
 
 ---
 

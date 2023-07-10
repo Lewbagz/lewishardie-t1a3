@@ -33,6 +33,7 @@ echo "Setting execute permission on the script..."
 chmod +x "main.py"
 
 echo "Setting up complete, all dependencies has been installed"
+deactivate
 
 echo "------------------------------"
 echo "------------------------------"
