@@ -17,33 +17,28 @@ def generate_password():
         # loop for min password length input, check correct input and error handling
         try:
             print("--------------------------------------------")
-            min_password_length = input("What is the minimum length of the password? ")
+            min_password_length = int(input("What is the minimum length of the password? "))
             # if password doesn't have a value, then return to begining screen
-            if (min_password_length == ""):
-                    return
-
             # if password is 8 or less characters then break loop and start again
-            min_password_length = int(min_password_length)
-
             if min_password_length >= 8:
                 break
             else:
                 # while min password length < 8 print error message and continue loop
                 print("""--------------------------------------------------------------
 The minimum password length must be 8 or more characters long!
---------------------------------------------------------------""")
+""")
         # value error for when a user enters a letter or non digit instead of a digit
         except ValueError:
             print("""-----------------------------------
 You must enter a number to proceed!
------------------------------------""")
+""")
        
     # Ask user for the maximum password length allowed
     while True:
          # loop for max password length input, check correct input and error handling
         try:
-            max_password_length = int(input("What is the maximum length of the password? "))
             print("--------------------------------------------")
+            max_password_length = int(input("What is the maximum length of the password? "))
             # if max password length is <= the min password length break loop and start again
             if min_password_length < max_password_length:
                 break
@@ -51,11 +46,11 @@ You must enter a number to proceed!
                 # while min password legnth is > then max password length print error message and continue loop
                 print("""--------------------------------------------------------------------------
 The maximum password must be greater than the minimum password to proceed!
---------------------------------------------------------------------------""")
+""")
         except ValueError:
                 print("""-----------------------------------
 You must enter a number to proceed!
------------------------------------""")
+""")
 
     # password length is randomly selected through secrets module in the range from min_password_length to max_password_length
     password_length = secrets.choice(range(min_password_length, max_password_length + 1))

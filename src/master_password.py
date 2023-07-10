@@ -4,6 +4,7 @@ import os
 import bcrypt
 import stdiomask
 import sys
+import password_manager
 
 DATABASE_FILE = "database.json"
 
@@ -14,7 +15,6 @@ def validation(user, password, data):
         if bcrypt.checkpw(password.encode(), hashed_password.encode()):
             return True
     return False
-
 
 # Function to display the login screen
 def welcome_screen():
@@ -43,15 +43,15 @@ def register_user():
     print("""---------------------------------
     Register your Username
 ---------------------------------
-    Typing "exit" will return 
-    you to the welcome screen.
+   Pressing enter will return 
+   you to the welcome screen.
 ---------------------------------""")
           
     while True:
 
         user = input("Create a User: ")
         
-        if user == "exit":
+        if user == "":
             return
 
         if user == "":
@@ -63,10 +63,10 @@ def register_user():
 
     clear_terminal()
     print("""---------------------------------
-    Select your Password
----------------------------------
-Password must be 12 characters long
----------------------------------
+    Select your Password""")
+    print("""---------------------------------
+Password must be 12 characters long""")
+    print("""---------------------------------
     Pressing enter will return 
     you to the welcome page.
 ---------------------------------""")           
@@ -118,8 +118,23 @@ def user_exists(user):
         return user in data
 
 def login():
+    clear_terminal()
+    print("""---------------------------------
+            Login""")
+    print("""---------------------------------
+    Pressing enter will return 
+    you to the welcome page.
+---------------------------------""") 
     user = input("Enter the Username: ")
+
+    if user == "":
+        print("Invalid Username")
+        return  # Break out of the loop
+    
     password = stdiomask.getpass("Enter your password: ", '*')
+    if password == "":
+        print("You must enter a password")
+        return  # Break out of the loop
 
     with open(DATABASE_FILE, "r") as db_file:
         data = json.load(db_file)
@@ -128,7 +143,8 @@ def login():
         print("Login successful")
         input("Enter any key to continue: ")
         user_file = f"{user}_accounts.json"
-        import password_manager
+        # import password_manager
+        # # __name__ == 
         password_manager.start_password_management(user, user_file)
     else:
         print("Invalid username or password. Please try again.")

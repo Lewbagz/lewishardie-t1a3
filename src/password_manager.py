@@ -3,7 +3,6 @@ from clear import clear_terminal
 import json
 import os
 import pyperclip
-import main
 
 ## CLASS SETUP IF TIME ALLOWS, trial later
 
@@ -29,8 +28,6 @@ import main
 #         self.email = data['email']
 #         self.password = data['password']
 
-
-
 # Function to load the json file
 def load_accounts(user_file):
    if os.path.exists(user_file):
@@ -51,105 +48,124 @@ def save_accounts(accounts, user_file):
 def print_options():
     clear_terminal() #maybe
     print("""---------------------------------
-    Account options
----------------------------------
-Select from the options below, 
-by inputing the revelant number.
----------------------------------
----------------------------------
+        Account options
+---------------------------------""")
+    print("""Select from the options below, 
+by inputing the revelant number.""")
+    print("""---------------------------------
+---------------------------------""")
+    print("""
     [1] List Accounts
     [2] Add Accounts
     [3] Get Password
     [4] Remove Account
     [5] Log Out
-    [Enter anything else to exit..]
----------------------------------""") 
+    [Enter anything else to exit..]""")
+    print("""---------------------------------""") 
 
 # function to display the accounts in the json file
 def list_accounts(user_file):
     clear_terminal()
 
-    print("""---------Your Accounts---------
--------------------------------
-""")
+    print("""---------------------------------
+          Your Accounts
+---------------------------------""")
               
     accounts = load_accounts(user_file)
 
 
     if len(accounts) < 1:
-        print("""-------------------------------
------- Account List Empty -----
--------------------------------""")
+        print("""---------------------------------
+        Account List Empty
+---------------------------------""")
 
     for website, account_info in accounts.items():
         username = account_info["Username"]
         email = account_info["Email"]
-        password = account_info["Password"]
+        # password = account_info["Password"]
             
         print(f"""
         {website}
 ------------------------------
 Username: {username}
 Email: {email}
-Password: {password}
 ------------------------------
 """)
+    input("Press enter to continue")
 
 # function to add additional accounts to the json file
 def add_accounts(user_file):
     clear_terminal()
     print("""---------------------------------
-    Add Account
----------------------------------
-Enter no value to retun
+        Add Account
+---------------------------------""")
+    print("""    Enter no value to return
 ---------------------------------
 ---------------------------------""")
-    
-    website = input("What account is this for? ").upper()
-    if (website == ""):
-        return
-    username = input("What is your username for the account? ")
-    if (username == ""):
-        return
+    while True:
+        website = input("What account is this for? ").upper()
+        if (website == ""):
+            print("You must enter a Website to continue")
+        else:
+            break
+    while True:
+        username = input("What is your username for the account? ")
+        if (username == ""):
+            print("You must enter a Username to continue")
+        else:
+            break
     
     while True:
         email = input("What is the email associated with the account? ")
         if "@" in email and "." in email:
             break
+        elif (email == ""):
+            print("You must enter an email")
         else:
             print("Invalid Email")
 
         # return to welcome screen with null entry
-        if (email == ""):
-            return
+        # if (email == ""):
+        #     print("You must enter an Email")
+        #     return
 
     # Run password generator
     password = generate_password()
-
+    
+    # Load accounts
     accounts = load_accounts(user_file)
+    # update accounts
     accounts.update({website: {"Username": username, "Email": email, "Password": password}})
+    # save accounts
     save_accounts(accounts, user_file)
     
-    print("New account added")
+    print("""---------------------------------
+        New account added""")
     print(f"""
-    -------- {website} --------
-    Your Username is : {username}
-    Your  Email   is : {email} 
-    Your Password is : {password}
-""")
+---------------------------------
+            {website} 
+---------------------------------""")
+    print(f"""Your Username is : {username}
+Your  Email   is : {email}
+---------------------------------""")
+    input("Press enter to continue")
 
 def get_password(user_file):
     clear_terminal()
 
-    print("----------- Get Password -----------")
-    print("--------- Enter no value to return --------")
+    print("""---------------------------------
+            Get Password
+---------------------------------""")
+    print("""---------------------------------
+    Enter no value to return
+---------------------------------""")
 
     accounts = load_accounts(user_file)
 
     if len(accounts) < 1:
-        print("""-------------------------------
------- Empty Account List -----
--------------------------------""")
+        print("""---------------------------------
+Empty Account List
+---------------------------------""")
               
     for index, (website, account_info) in enumerate(accounts.items()):
         password = account_info["Password"]
@@ -179,24 +195,27 @@ def get_password(user_file):
 # function to remove account from user database         
 def remove_account(user_file):
     clear_terminal()
-
-    print("----------- Remove Account -----------")
+    print("""---------------------------------
+        Remove Account
+---------------------------------
+    Enter no value to return
+---------------------------------
+---------------------------------""")
 
     accounts = load_accounts(user_file)
 
     if len(accounts) < 1:
-        print("""-------------------------------
------- Empty Account List -----
--------------------------------""")
+        print("""---------------------------------
+        Empty Account List 
+---------------------------------""")
 
     for index, (website, account_info) in enumerate(accounts.items()):
         username = account_info["Username"]
         # password = account_info["Password"]
         email = account_info["Email"]
 
-        print(f"""------------------------------------------------
-[{index + 1}] {website}: {username}, {email}
-------------------------------------------------""")
+        print(f"""[{index + 1}] {website}: {username}, {email}
+---------------------------------""")
 
     while True:
 
@@ -220,7 +239,9 @@ def remove_account(user_file):
 
 def log_out():
     clear_terminal()
-    print("--------- Log out of account --------")
+    print("""---------------------------------
+        Log out of account
+---------------------------------""")
     while True:
         try:
             option = input("Are you sure you want to log out?[y/n]: ")
@@ -230,12 +251,13 @@ def log_out():
 
         match option:
             case "y":
+                ## __name__ == __main__
                 import main
                 main.start_main()
                 return
+            
             case _:
-                print("returning you page")
-                input("press anything to continue")
+                input("Press anything to return")
                 return
 
 def start_password_management(username, user_file):
@@ -262,6 +284,6 @@ def start_password_management(username, user_file):
             case _:
                 break
 
-    input("press enter to continue...")
+    input("Press enter to continue...")
 
 print("Application closed")
