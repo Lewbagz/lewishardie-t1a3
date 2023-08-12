@@ -7,7 +7,7 @@
 
 ## Link to Github Repository:
 
-My github repository can be found at this [link](https://github.com/Lewishardie/lewishardie-t1a3).
+My github repository can be found at this [link](https://github.com/lewishardie/lewishardie-t1a3).
 
 `https://github.com/Lewbagz/lewishardie-t1a3`
 
